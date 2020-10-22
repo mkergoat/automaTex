@@ -1,3 +1,5 @@
+from String import Template
+
 titlepagetemplate = (r"""
 \begin{titlepage}
 \begin{center}
