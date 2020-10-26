@@ -73,6 +73,17 @@ class LaTeXFloat:
         Adds the float to the list of elements in the document
         """
         elements.append(self.write())
+                    
+    def prepare_env(self):
+        env = Template(r"""
+            \begin{${kind}}
+            \centering
+                ${float}
+            \caption{caption}
+            \label{label}
+            \end{${kind}}
+            """)
+        return env
 
 class LaTeXFigure(LaTeXFloat):
     def __init__(self, kind, caption, label, positionning, figure_filename, scalefactor, cropfactors=['', '']):
@@ -83,5 +94,37 @@ class LaTeXFigure(LaTeXFloat):
         self._filename = figure_filename
         
 class LaTeXTable(LaTeXFloat):
-    def __init__(self, kind, caption, label, positionning):
+    def __init__(self, kind, caption, label, positionning, style, file=None, column_alignements='c'):
         LaTexFloat.__init__(self, kind, caption, label, positionning)
+        self.style = style
+        self._file = file
+        self.column_alignement = colum_alignments
+        self.lines = []
+          
+    def prepare_tabular(self):
+        tab_env = Template("""
+        \begin{tabular}{${align}
+        ${table}
+        \end{tabular}
+        """)
+        return tab_env
+                    
+    def add_line_to_table(self, line, lines, colsep=','):
+        """
+        Transforms a line into a str with '&' between columns
+        """
+        lines.append('&'.join(line.split(colsep)))
+                    
+    def table_from_file(self):
+         """
+         Table automatically generated from a file
+         """
+         f = open(file, 'r')
+         header = f.readline()
+         number_of_columns = len(header)
+         if len(self.column_alignements) == 1:
+            self.column_alignement = number_of_columns * self.column_alignement
+          else:
+              pass
+          env = self.prepare_env
+          tabular_env = self.prepare_tabular
