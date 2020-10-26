@@ -24,12 +24,12 @@ class LaTeXReport:
         self.title = title
         self._author = author
         self._date = date
-        if sty = None:
+        if sty == None:
             style = 'plain'
         else:
             style = sty
         self.titlepage = ''
-        if custom_commands=None:
+        if custom_commands == None:
             custom = ''
         else:
             custom = custom_commands
@@ -62,8 +62,8 @@ class LaTeXFloat:
     """
     This class representents any kind of float (table, figure)
     """
-    def __init__(self, type, caption, label, positionning):
-        self._type = _type
+    def __init__(self, kind, caption, label, positionning):
+        self._kind = kind
         self._caption = caption
         self._label = label
         self.pos = positionning
@@ -75,12 +75,13 @@ class LaTeXFloat:
         elements.append(self.write())
 
 class LaTeXFigure(LaTeXFloat):
-    def __init__(self, type, caption, label, positionning, figure_filename, scalefactor, cropfactors=['', '']):
-        LaTeXFloat.__init__(self, type, caption, label, positionning)
+    def __init__(self, kind, caption, label, positionning, figure_filename, scalefactor, cropfactors=['', '']):
+        LaTeXFloat.__init__(self, kind, caption, label, positionning)
         self.scale = scalefactor
         self._cropx = cropfactors[0]
         self._cropy = cropfactors[1]
         self._filename = figure_filename
         
 class LaTeXTable(LaTeXFloat):
-
+    def __init__(self, kind, caption, label, positionning):
+        LaTexFloat.__init__(self, kind, caption, label, positionning)
